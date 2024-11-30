@@ -4,7 +4,7 @@ import datetime
 
 app = Flask(__name__)
 
-@app.route('/generate_image')
+@app.route('/generate_image', methods=['GET'])
 def generate():
     ct =  datetime.datetime.now()
     image_name = f"{str(ct).replace(' ','-').replace('.','-')}.png"
@@ -14,13 +14,17 @@ def generate():
 
     return send_file(output_image, mimetype='image/png')
 
-@app.route('/clean')
+@app.route('/clean', methods=['GET'])
 def clean():
     out = utils.clean_generations('./exports')
     status = {
         'status' : out
     }
     return jsonify(status)
+
+@app.route('/', methods=['GET'])
+def root():
+    return "<h1>WELCOME TO POPQUEST API </h1>"
 
 '''
 @app.route('/generate_answer')
